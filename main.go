@@ -8,7 +8,6 @@ import (
 	"net"
 	"os"
 	"strconv"
-	"sync"
 	"time"
 
 	"github.com/davecgh/go-spew/spew"
@@ -30,7 +29,6 @@ type Message struct {
 var Blockchain []Block
 
 var bcServer chan []Block
-var mutex = &sync.Mutex{}
 
 func main() {
 	err := godotenv.Load()

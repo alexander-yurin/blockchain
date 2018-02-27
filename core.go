@@ -6,11 +6,14 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"sync"
 	"time"
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/gorilla/mux"
 )
+
+var mutex = &sync.Mutex{}
 
 // func run() error {
 // 	rmux := makeMuxRouter()
@@ -82,9 +85,11 @@ func respondWithJSON(w http.ResponseWriter, r *http.Request, code int, payload i
 }
 
 func replaceChain(newBlocks []Block) {
+	mutex.Lock()
 	if len(newBlocks) > len(Blockchain) {
 		Blockchain = newBlocks
 	}
+	mutex.Unlock()
 }
 
 func isBlockValid(newBlock, oldBlock Block) bool {
